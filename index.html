@@ -979,11 +979,11 @@ async function startBoard() {
     err.style.display='block'; err.textContent='❌ Введите ID таблицы';
     return;
   }
-  cfg = { sheetId:id, sheetName:sn, interval:300, demo:false };
+  cfg = { sheetId:id, sheetName:sn, interval:60, demo:false };
   showBoard();
   await loadAndRender();
   clearInterval(refreshTimer);
-  refreshTimer = setInterval(loadAndRender, 300_000);
+  refreshTimer = setInterval(loadAndRender, 60_000);
   setTimeout(initAutoScroll, 2500);
 }
 
