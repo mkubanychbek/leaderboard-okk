@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🏁 QA LEADERBOARD</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #FFD700;
+    --silver: #C0C0C0;
+    --bronze: #CD7F32;
+    --neon-red: #FF2D55;
+    --neon-blue: #00D4FF;
+    --neon-green: #00FF88;
+    --neon-purple: #BF5FFF;
+    --bg-dark: #05070F;
+    --track-bg: #0A0E1A;
+    --panel-bg: rgba(10, 14, 26, 0.92);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg-dark);
+    font-family: 'Rajdhani', sans-serif;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* ─── STARFIELD BACKGROUND ─── */
+  #starfield {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  /* ─── SCANLINES ─── */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,0,0,0.07) 2px,
+      rgba(0,0,0,0.07) 4px
+    );
+    pointer-events: none;
+    z-index: 999;
+  }
+
+  /* ─── HEADER ─── */
+  .header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 18px 40px 10px;
+    background: linear-gradient(180deg, rgba(0,212,255,0.08) 0%, transparent 100%);
+    border-bottom: 1px solid rgba(0,212,255,0.2);
+  }
+
+  .header-title {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(22px, 3.5vw, 48px);
+    font-weight: 900;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow:
+      0 0 20px var(--neon-blue),
+      0 0 60px rgba(0,212,255,0.4),
+      0 0 120px rgba(0,212,255,0.2);
+    animation: titlePulse 3s ease-in-out infinite;
+  }
+
+  .header-sub {
+    font-size: clamp(11px, 1.3vw, 16px);
+    color: rgba(0,212,255,0.7);
+    letter-spacing: 0.3em;
+    margin-top: 4px;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    font-size: clamp(10px, 1.1vw, 14px);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.1em;
+  }
+
+  .live-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 8px var(--neon-green);
+    margin-right: 6px;
+    animation: blink 1s step-end infinite;
+  }
+
+  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes titlePulse {
+    0%, 100% { text-shadow: 0 0 20px var(--neon-blue), 0 0 60px rgba(0,212,255,0.4); }
+    50% { text-shadow: 0 0 30px var(--neon-blue), 0 0 80px rgba(0,212,255,0.6), 0 0 140px rgba(0,212,255,0.3); }
+  }
+
+  /* ─── CONFIG PANEL ─── */
+  .config-panel {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(5,7,15,0.97);
+    border: 1px solid rgba(0,212,255,0.4);
+    border-radius: 16px;
+    padding: 40px;
+    z-index: 1000;
+    width: min(520px, 90vw);
+    box-shadow: 0 0 60px rgba(0,212,255,0.15), 0 0 120px rgba(0,212,255,0.05);
+  }
+
+  .config-panel h2 {
+    font-family: 'Orbitron', monospace;
+    color: var(--neon-blue);
+    font-size: 20px;
+    margin-bottom: 24px;
+    text-align: center;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 20px var(--neon-blue);
+  }
+
+  .config-group { margin-bottom: 20px; }
+  .config-group label {
+    display: block;
+    color: rgba(0,212,255,0.8);
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .config-group input, .config-group select {
+    width: 100%;
+    background: rgba(0,212,255,0.05);
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: #fff;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .config-group input:focus, .config-group select:focus {
+    border-color: var(--neon-blue);
+    box-shadow: 0 0 12px rgba(0,212,255,0.25);
+  }
+
+  .config-group input::placeholder { color: rgba(255,255,255,0.3); }
+  .config-group select option { background: #0A0E1A; color: #fff; }
+
+  .config-hint {
+    font-size: 11px;
+    color: rgba(255,255,255,0.35);
+    margin-top: 6px;
+    line-height: 1.5;
+  }
+
+  .btn-start {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, rgba(0,212,255,0.2), rgba(0,212,255,0.1));
+    border: 1px solid var(--neon-blue);
+    border-radius: 8px;
+    color: var(--neon-blue);
+    font-family: 'Orbitron', monospace;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    margin-top: 8px;
+    box-shadow: 0 0 20px rgba(0,212,255,0.1);
+  }
+
+  .btn-start:hover {
+    background: linear-gradient(135deg, rgba(0,212,255,0.35), rgba(0,212,255,0.2));
+    box-shadow: 0 0 30px rgba(0,212,255,0.3);
+    transform: translateY(-1px);
+  }
+
+  .btn-demo {
+    width: 100%;
+    padding: 10px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: rgba(255,255,255,0.4);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  .btn-demo:hover { color: rgba(255,255,255,0.7); border-color: rgba(255,255,255,0.3); }
+
+  .error-msg {
+    color: var(--neon-red);
+    font-size: 12px;
+    margin-top: 8px;
+    text-align: center;
+    display: none;
+    text-shadow: 0 0 10px var(--neon-red);
+  }
+
+  /* ─── TRACK AREA ─── */
+  .track-area {
+    position: relative;
+    z-index: 10;
+    flex: 1;
+    padding: 16px 40px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    overflow: hidden;
+  }
+
+  /* ─── RACE LANE ─── */
+  .race-lane {
+    position: relative;
+    height: calc((100vh - 180px) / 10);
+    min-height: 52px;
+    max-height: 80px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* Track surface */
+  .track-surface {
+    position: absolute;
+    inset: 4px 0;
+    background: var(--track-bg);
+    border-radius: 6px;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    border-bottom: 1px solid rgba(0,0,0,0.5);
+    overflow: hidden;
+  }
+
+  /* Asphalt texture */
+  .track-surface::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 60px,
+        rgba(255,255,255,0.025) 60px,
+        rgba(255,255,255,0.025) 61px
+      );
+    animation: roadMove 1s linear infinite;
+  }
+
+  @keyframes roadMove {
+    from { transform: translateX(0); }
+    to { transform: translateX(-61px); }
+  }
+
+  /* FINISH LINE */
+  .finish-line {
+    position: absolute;
+    right: 180px;
+    top: 4px;
+    bottom: 4px;
+    width: 24px;
+    background: repeating-linear-gradient(
+      0deg,
+      #fff 0px, #fff 6px,
+      #000 6px, #000 12px
+    );
+    opacity: 0.85;
+    border-radius: 2px;
+    z-index: 5;
+    box-shadow: 0 0 12px rgba(255,255,255,0.4), -6px 0 20px rgba(255,255,255,0.1);
+  }
+
+  /* Lane side info: rank + name */
+  .lane-left {
+    position: absolute;
+    left: 0;
+    top: 0; bottom: 0;
+    width: 220px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-left: 4px;
+    z-index: 10;
+  }
+
+  .rank-badge {
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    font-size: clamp(16px, 2vw, 26px);
+    width: 42px;
+    text-align: center;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 8px currentColor);
+  }
+
+  .rank-1 { color: var(--gold); }
+  .rank-2 { color: var(--silver); }
+  .rank-3 { color: var(--bronze); }
+  .rank-other { color: rgba(255,255,255,0.5); font-size: clamp(13px, 1.6vw, 20px); }
+
+  .operator-name {
+    font-size: clamp(13px, 1.6vw, 20px);
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 160px;
+  }
+
+  /* Score on right */
+  .lane-right {
+    position: absolute;
+    right: 0;
+    top: 0; bottom: 0;
+    width: 170px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 8px;
+    z-index: 10;
+  }
+
+  .score-value {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(15px, 1.8vw, 24px);
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 12px currentColor;
+    transition: color 0.5s;
+  }
+
+  .score-stars {
+    font-size: clamp(10px, 1.2vw, 15px);
+    letter-spacing: 1px;
+  }
+
+  /* ─── CAR ─── */
+  .car-wrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 20;
+    transition: left 1.2s cubic-bezier(0.25, 0.1, 0.25, 1);
+    pointer-events: none;
+  }
+
+  .car-svg {
+    display: block;
+    filter: drop-shadow(0 0 6px rgba(255,255,255,0.3));
+  }
+
+  /* Idle bounce at finish */
+  .car-at-finish .car-svg {
+    animation: carIdle 0.4s ease-in-out infinite alternate;
+  }
+
+  @keyframes carIdle {
+    from { transform: translateY(0px) rotate(-0.5deg); }
+    to { transform: translateY(-3px) rotate(0.5deg); }
+  }
+
+  /* Exhaust particles */
+  .exhaust {
+    position: absolute;
+    left: -4px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    pointer-events: none;
+  }
+
+  .exhaust-dot {
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: rgba(255,200,100,0.8);
+    animation: exhaustAnim 0.3s ease-out infinite;
+  }
+  .exhaust-dot:nth-child(2) { animation-delay: 0.1s; width: 3px; height: 3px; background: rgba(255,100,50,0.6); }
+  .exhaust-dot:nth-child(3) { animation-delay: 0.2s; width: 2px; height: 2px; background: rgba(200,200,200,0.4); }
+
+  @keyframes exhaustAnim {
+    0% { transform: translateX(0) scale(1); opacity: 0.9; }
+    100% { transform: translateX(-18px) scale(0); opacity: 0; }
+  }
+
+  /* Speed lines */
+  .speed-lines {
+    position: absolute;
+    left: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  .car-moving .speed-lines { opacity: 1; }
+
+  .speed-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(0,212,255,0.5));
+    margin-bottom: 4px;
+    animation: speedLineAnim 0.2s linear infinite;
+  }
+  .speed-line:nth-child(1) { width: 25px; margin-top: 0; }
+  .speed-line:nth-child(2) { width: 18px; margin-left: 5px; }
+  .speed-line:nth-child(3) { width: 22px; margin-left: 2px; }
+
+  @keyframes speedLineAnim {
+    from { transform: translateX(0); opacity: 0.8; }
+    to { transform: translateX(-10px); opacity: 0; }
+  }
+
+  /* ─── GLOW LANE for top 3 ─── */
+  .lane-glow-1 .track-surface { box-shadow: 0 0 20px rgba(255,215,0,0.12) inset; border: 1px solid rgba(255,215,0,0.15); }
+  .lane-glow-2 .track-surface { box-shadow: 0 0 15px rgba(192,192,192,0.08) inset; border: 1px solid rgba(192,192,192,0.1); }
+  .lane-glow-3 .track-surface { box-shadow: 0 0 15px rgba(205,127,50,0.08) inset; border: 1px solid rgba(205,127,50,0.1); }
+
+  /* ─── TICKER / FOOTER ─── */
+  .footer {
+    position: relative;
+    z-index: 10;
+    background: rgba(0,212,255,0.05);
+    border-top: 1px solid rgba(0,212,255,0.15);
+    padding: 8px 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+  }
+
+  .update-info {
+    font-size: 12px;
+    color: rgba(0,212,255,0.6);
+    letter-spacing: 0.1em;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  .progress-bar-wrap {
+    flex: 1;
+    height: 3px;
+    background: rgba(255,255,255,0.08);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--neon-blue), var(--neon-green));
+    border-radius: 2px;
+    width: 0%;
+    box-shadow: 0 0 8px var(--neon-blue);
+    transition: width 1s linear;
+  }
+
+  .settings-btn {
+    background: transparent;
+    border: 1px solid rgba(0,212,255,0.3);
+    border-radius: 6px;
+    color: rgba(0,212,255,0.6);
+    padding: 4px 12px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    cursor: pointer;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .settings-btn:hover { color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 10px rgba(0,212,255,0.2); }
+
+  /* ─── RANK CHANGE BADGES ─── */
+  .rank-change {
+    position: absolute;
+    right: 155px;
+    font-family: 'Orbitron', monospace;
+    font-size: 11px;
+    font-weight: 700;
+    animation: rankChangeFade 2s ease-out forwards;
+    z-index: 30;
+    pointer-events: none;
+  }
+
+  .rank-up { color: var(--neon-green); }
+  .rank-down { color: var(--neon-red); }
+
+  @keyframes rankChangeFade {
+    0% { opacity: 1; transform: translateY(0); }
+    70% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(-20px); }
+  }
+
+  /* ─── CONFETTI for #1 ─── */
+  .confetti-piece {
+    position: fixed;
+    width: 8px; height: 8px;
+    border-radius: 2px;
+    pointer-events: none;
+    z-index: 998;
+    animation: confettiFall linear forwards;
+  }
+
+  @keyframes confettiFall {
+    0% { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* ─── LOADING ─── */
+  .loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(5,7,15,0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 500;
+    font-family: 'Orbitron', monospace;
+    color: var(--neon-blue);
+    font-size: 18px;
+    letter-spacing: 0.2em;
+    display: none;
+  }
+
+  .loading-spinner {
+    width: 40px; height: 40px;
+    border: 2px solid rgba(0,212,255,0.2);
+    border-top-color: var(--neon-blue);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin-right: 16px;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+
+<!-- CONFIG PANEL -->
+<div class="config-panel" id="configPanel">
+  <h2>🏁 QA RACE SETUP</h2>
+
+  <div class="config-group">
+    <label>Google Sheets ID</label>
+    <input type="text" id="sheetId" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+    <div class="config-hint">
+      Найдите в URL таблицы: docs.google.com/spreadsheets/d/<b>ВОТ_ЭТОТ_ID</b>/edit<br>
+      ⚠️ Таблица должна быть открыта для просмотра (Все, у кого есть ссылка)
+    </div>
+  </div>
+
+  <div class="config-group">
+    <label>Название листа</label>
+    <input type="text" id="sheetName" placeholder="Sheet1" value="Sheet1" />
+    <div class="config-hint">Имя вкладки. По умолчанию "Sheet1" или "Лист1"</div>
+  </div>
+
+  <div class="config-group">
+    <label>Формат таблицы</label>
+    <select id="colFormat">
+      <option value="AB">Колонки: A=Имя, B=Оценка</option>
+      <option value="ABC">Колонки: A=Имя, B=Отдел, C=Оценка</option>
+    </select>
+    <div class="config-hint">Первая строка — заголовки, данные начинаются со 2-й строки</div>
+  </div>
+
+  <div class="config-group">
+    <label>Интервал обновления</label>
+    <select id="refreshInterval">
+      <option value="30">Каждые 30 секунд</option>
+      <option value="60" selected>Каждую минуту</option>
+      <option value="300">Каждые 5 минут</option>
+    </select>
+  </div>
+
+  <div id="errorMsg" class="error-msg">❌ Не удалось загрузить данные. Проверьте ID и доступ к таблице.</div>
+
+  <button class="btn-start" onclick="startBoard()">🚀 ЗАПУСТИТЬ БОРД</button>
+  <button class="btn-demo" onclick="startDemo()">▶ Демо-режим (без Google Sheets)</button>
+</div>
+
+<!-- LOADING -->
+<div class="loading-overlay" id="loadingOverlay">
+  <div class="loading-spinner"></div>
+  ЗАГРУЗКА...
+</div>
+
+<!-- HEADER -->
+<div class="header" id="headerEl" style="display:none">
+  <div class="header-title">🏁 QA CHAMPIONSHIP</div>
+  <div class="header-sub">Операционный центр — Качество обслуживания</div>
+  <div class="header-meta">
+    <span><span class="live-dot"></span>LIVE</span>
+    <span id="lastUpdate">Обновлено: —</span>
+    <span id="operatorCount">0 операторов</span>
+  </div>
+</div>
+
+<!-- TRACK AREA -->
+<div class="track-area" id="trackArea" style="display:none"></div>
+
+<!-- FOOTER -->
+<div class="footer" id="footerEl" style="display:none">
+  <span class="update-info">Следующее обновление через <span id="countdown">—</span>с</span>
+  <div class="progress-bar-wrap"><div class="progress-bar-fill" id="progressBar"></div></div>
+  <button class="settings-btn" onclick="showConfig()">⚙ Настройки</button>
+</div>
+
+<script>
+// ─── STARFIELD ───
+const canvas = document.getElementById('starfield');
+const ctx = canvas.getContext('2d');
+let stars = [];
+
+function initStars() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  stars = Array.from({length: 200}, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * canvas.height,
+    r: Math.random() * 1.5,
+    speed: Math.random() * 0.4 + 0.05,
+    alpha: Math.random() * 0.6 + 0.2
+  }));
+}
+
+function drawStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,255,255,${s.alpha})`;
+    ctx.fill();
+    s.x -= s.speed;
+    if (s.x < 0) { s.x = canvas.width; s.y = Math.random() * canvas.height; }
+  });
+  requestAnimationFrame(drawStars);
+}
+
+initStars();
+drawStars();
+window.addEventListener('resize', initStars);
+
+// ─── CAR COLORS per rank ───
+const CAR_COLORS = [
+  {body:'#FFD700', stripe:'#FF6B00', glow:'rgba(255,215,0,0.7)'},   // 1 gold
+  {body:'#C0C0C0', stripe:'#606060', glow:'rgba(192,192,192,0.6)'},  // 2 silver
+  {body:'#CD7F32', stripe:'#8B4513', glow:'rgba(205,127,50,0.6)'},   // 3 bronze
+  {body:'#00D4FF', stripe:'#006688', glow:'rgba(0,212,255,0.5)'},    // 4 blue
+  {body:'#FF2D55', stripe:'#8B0020', glow:'rgba(255,45,85,0.5)'},    // 5 red
+  {body:'#BF5FFF', stripe:'#6600AA', glow:'rgba(191,95,255,0.5)'},   // 6 purple
+  {body:'#00FF88', stripe:'#006633', glow:'rgba(0,255,136,0.5)'},    // 7 green
+  {body:'#FF9F00', stripe:'#7A4D00', glow:'rgba(255,159,0,0.5)'},    // 8 orange
+  {body:'#FF69B4', stripe:'#8B1A4A', glow:'rgba(255,105,180,0.5)'}, // 9 pink
+  {body:'#FFFFFF', stripe:'#888888', glow:'rgba(255,255,255,0.4)'},  // 10 white
+];
+
+function makeCar(colorIdx, rank) {
+  const c = CAR_COLORS[colorIdx % CAR_COLORS.length];
+  const h = 32; // car height in px
+  const w = 72; // car width in px
+  return `<svg class="car-svg" width="${w}" height="${h}" viewBox="0 0 72 32">
+    <defs>
+      <filter id="glow${rank}">
+        <feGaussianBlur stdDeviation="2" result="blur"/>
+        <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+    </defs>
+    <!-- Body -->
+    <ellipse cx="36" cy="22" rx="30" ry="8" fill="${c.body}" filter="url(#glow${rank})"/>
+    <!-- Cabin -->
+    <path d="M22 22 Q26 10 36 9 Q46 10 50 22 Z" fill="${c.body}" opacity="0.9"/>
+    <!-- Stripe -->
+    <rect x="12" y="19" width="48" height="3" rx="1" fill="${c.stripe}" opacity="0.7"/>
+    <!-- Windshield -->
+    <path d="M27 21 Q30 12 42 12 Q47 14 45 21 Z" fill="rgba(150,230,255,0.5)" stroke="rgba(255,255,255,0.3)" stroke-width="0.5"/>
+    <!-- Rear wing -->
+    <rect x="4" y="14" width="3" height="10" rx="1" fill="${c.stripe}"/>
+    <rect x="1" y="13" width="9" height="3" rx="1" fill="${c.body}"/>
+    <!-- Front wing -->
+    <rect x="66" y="19" width="3" height="5" rx="1" fill="${c.stripe}"/>
+    <rect x="63" y="18" width="9" height="2.5" rx="1" fill="${c.body}"/>
+    <!-- Wheels -->
+    <ellipse cx="16" cy="27" rx="6" ry="5" fill="#1a1a2e" stroke="${c.stripe}" stroke-width="1.5"/>
+    <ellipse cx="16" cy="27" rx="3" ry="2.5" fill="#333" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+    <ellipse cx="55" cy="27" rx="6" ry="5" fill="#1a1a2e" stroke="${c.stripe}" stroke-width="1.5"/>
+    <ellipse cx="55" cy="27" rx="3" ry="2.5" fill="#333" stroke="rgba(255,255,255,0.2)" stroke-width="0.5"/>
+    <!-- Headlight -->
+    <ellipse cx="68" cy="22" rx="2" ry="1.5" fill="rgba(255,255,200,0.9)" filter="url(#glow${rank})"/>
+    <!-- Number -->
+    <text x="36" y="17" text-anchor="middle" fill="rgba(255,255,255,0.9)" font-size="6" font-family="Orbitron,monospace" font-weight="700">${rank}</text>
+  </svg>`;
+}
+
+// ─── STATE ───
+let config = {};
+let operators = [];
+let prevRanks = {};
+let refreshTimer = null;
+let countdownTimer = null;
+let countdownVal = 60;
+
+// ─── DEMO DATA ───
+const DEMO_DATA = [
+  {name: 'Алексей К.', score: 4.92},
+  {name: 'Мария С.', score: 4.87},
+  {name: 'Дмитрий П.', score: 4.75},
+  {name: 'Анна В.', score: 4.68},
+  {name: 'Сергей Н.', score: 4.55},
+  {name: 'Ольга Т.', score: 4.43},
+  {name: 'Иван Л.', score: 4.38},
+  {name: 'Екатерина М.', score: 4.21},
+  {name: 'Павел Ф.', score: 4.10},
+  {name: 'Татьяна Р.', score: 3.95},
+];
+
+// ─── GOOGLE SHEETS FETCH ───
+async function fetchSheetData(sheetId, sheetName) {
+  const url = `https://docs.google.com/spreadsheets/d/${sheetId}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+  const resp = await fetch(url);
+  if (!resp.ok) throw new Error('HTTP ' + resp.status);
+  const text = await resp.text();
+  const json = JSON.parse(text.match(/google\.visualization\.Query\.setResponse\(([\s\S]*)\)/)[1]);
+  const rows = json.table.rows;
+  const isABC = config.colFormat === 'ABC';
+  const data = [];
+  for (let i = 0; i < rows.length; i++) {
+    const r = rows[i];
+    if (!r.c || !r.c[0] || r.c[0].v === null) continue;
+    const name = String(r.c[0].v || '').trim();
+    const scoreRaw = isABC ? (r.c[2] && r.c[2].v) : (r.c[1] && r.c[1].v);
+    const score = parseFloat(scoreRaw);
+    if (name && !isNaN(score)) data.push({name, score});
+  }
+  return data.sort((a,b) => b.score - a.score).slice(0, 10);
+}
+
+// ─── RENDER BOARD ───
+function renderBoard(data) {
+  const track = document.getElementById('trackArea');
+  const isFirst = track.children.length === 0;
+
+  document.getElementById('operatorCount').textContent = data.length + ' операторов';
+  document.getElementById('lastUpdate').textContent = 'Обновлено: ' + new Date().toLocaleTimeString('ru-RU');
+
+  const maxScore = Math.max(...data.map(d => d.score));
+  const minScore = Math.min(...data.map(d => d.score));
+
+  // Track width for car positioning
+  const trackW = track.clientWidth;
+  const leftOffset = 225;  // left panel width
+  const rightOffset = 175; // right panel width
+  const finishX = trackW - rightOffset - 24; // finish line pixel from left of track
+  const raceWidth = finishX - leftOffset;    // available race distance
+
+  if (isFirst) {
+    track.innerHTML = '';
+    data.forEach((op, i) => {
+      const rank = i + 1;
+      track.appendChild(createLane(op, rank, i, maxScore, minScore, raceWidth, leftOffset));
+    });
+    // After paint, animate cars in
+    requestAnimationFrame(() => {
+      data.forEach((op, i) => {
+        const rank = i + 1;
+        setTimeout(() => moveCar(rank, op.score, maxScore, minScore, raceWidth, leftOffset), 100 + i * 120);
+      });
+    });
+  } else {
+    // Update existing lanes (re-sort with animation)
+    const newRanks = {};
+    data.forEach((op, i) => { newRanks[op.name] = i + 1; });
+
+    // Check rank changes
+    data.forEach((op, i) => {
+      const rank = i + 1;
+      const prev = prevRanks[op.name];
+      if (prev && prev !== rank) {
+        showRankChange(rank, prev > rank ? '▲ ' + (prev - rank) : '▼ ' + (rank - prev), prev > rank);
+      }
+    });
+
+    // Update lanes
+    const lanes = track.querySelectorAll('.race-lane');
+    data.forEach((op, i) => {
+      const rank = i + 1;
+      const lane = track.querySelector(`[data-rank="${rank}"]`);
+      if (lane) {
+        lane.querySelector('.operator-name').textContent = op.name;
+        const scoreEl = lane.querySelector('.score-value');
+        scoreEl.textContent = op.score.toFixed(2);
+        scoreEl.style.color = getScoreColor(op.score, maxScore, minScore);
+        lane.querySelector('.score-stars').textContent = getStars(op.score);
+        moveCar(rank, op.score, maxScore, minScore, raceWidth, leftOffset);
+      }
+    });
+
+    // Confetti for #1
+    if (data[0] && prevRanks[data[0].name] !== 1 && Object.keys(prevRanks).length > 0) {
+      spawnConfetti();
+    }
+  }
+
+  prevRanks = {};
+  data.forEach((op, i) => { prevRanks[op.name] = i + 1; });
+}
+
+function createLane(op, rank, colorIdx, maxScore, minScore, raceWidth, leftOffset) {
+  const div = document.createElement('div');
+  div.className = `race-lane${rank <= 3 ? ` lane-glow-${rank}` : ''}`;
+  div.setAttribute('data-rank', rank);
+
+  const rankClass = rank <= 3 ? `rank-${rank}` : 'rank-other';
+  const scoreColor = getScoreColor(op.score, maxScore, minScore);
+  const stars = getStars(op.score);
+
+  div.innerHTML = `
+    <div class="track-surface"></div>
+    <div class="finish-line"></div>
+    <div class="lane-left">
+      <div class="rank-badge ${rankClass}">${rank <= 3 ? ['🥇','🥈','🥉'][rank-1] : '#' + rank}</div>
+      <div class="operator-name">${op.name}</div>
+    </div>
+    <div class="car-wrapper" id="car-${rank}">
+      <div class="speed-lines">
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+        <div class="speed-line"></div>
+      </div>
+      <div class="exhaust">
+        <div class="exhaust-dot"></div>
+        <div class="exhaust-dot"></div>
+        <div class="exhaust-dot"></div>
+      </div>
+      ${makeCar(colorIdx, rank)}
+    </div>
+    <div class="lane-right">
+      <div class="score-stars">${stars}</div>
+      <div class="score-value" style="color:${scoreColor}">${op.score.toFixed(2)}</div>
+    </div>
+  `;
+
+  // Initial car position (start, leftOffset)
+  const carEl = div.querySelector(`#car-${rank}`);
+  carEl.style.left = leftOffset + 'px';
+
+  return div;
+}
+
+function moveCar(rank, score, maxScore, minScore, raceWidth, leftOffset) {
+  const carEl = document.getElementById('car-' + rank);
+  if (!carEl) return;
+
+  const range = maxScore - minScore || 1;
+  const pct = (score - minScore) / range; // 0..1
+  // map to: min 10% of raceWidth .. 100% (finish line)
+  const minPct = 0.12;
+  const pos = leftOffset + (minPct + pct * (1 - minPct)) * raceWidth;
+  const finishPos = leftOffset + raceWidth;
+  const atFinish = pos >= finishPos - 10;
+
+  carEl.classList.add('car-moving');
+  carEl.style.left = pos + 'px';
+
+  setTimeout(() => {
+    carEl.classList.remove('car-moving');
+    if (atFinish) carEl.classList.add('car-at-finish');
+    else carEl.classList.remove('car-at-finish');
+  }, 1400);
+}
+
+function getScoreColor(score, max, min) {
+  if (score >= max * 0.97) return '#FFD700';
+  if (score >= max * 0.90) return '#00FF88';
+  if (score >= max * 0.75) return '#00D4FF';
+  if (score >= max * 0.60) return '#FF9F00';
+  return '#FF2D55';
+}
+
+function getStars(score) {
+  const full = Math.floor(score);
+  const half = score - full >= 0.5 ? 1 : 0;
+  const empty = 5 - full - half;
+  return '★'.repeat(Math.min(full, 5)) + (half ? '½' : '') + '☆'.repeat(Math.max(0, empty));
+}
+
+function showRankChange(rank, text, isUp) {
+  const lane = document.querySelector(`[data-rank="${rank}"]`);
+  if (!lane) return;
+  const badge = document.createElement('div');
+  badge.className = 'rank-change ' + (isUp ? 'rank-up' : 'rank-down');
+  badge.textContent = text;
+  lane.appendChild(badge);
+  setTimeout(() => badge.remove(), 2100);
+}
+
+function spawnConfetti() {
+  const colors = ['#FFD700','#FF2D55','#00D4FF','#00FF88','#BF5FFF','#FF9F00'];
+  for (let i = 0; i < 60; i++) {
+    setTimeout(() => {
+      const el = document.createElement('div');
+      el.className = 'confetti-piece';
+      el.style.left = (20 + Math.random() * 60) + 'vw';
+      el.style.background = colors[Math.floor(Math.random() * colors.length)];
+      el.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      el.style.animationDelay = Math.random() * 0.5 + 's';
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 4000);
+    }, i * 30);
+  }
+}
+
+// ─── COUNTDOWN ───
+function startCountdown(secs) {
+  clearInterval(countdownTimer);
+  countdownVal = secs;
+  const bar = document.getElementById('progressBar');
+  const cd = document.getElementById('countdown');
+
+  countdownTimer = setInterval(() => {
+    countdownVal--;
+    cd.textContent = countdownVal;
+    bar.style.width = ((secs - countdownVal) / secs * 100) + '%';
+    if (countdownVal <= 0) clearInterval(countdownTimer);
+  }, 1000);
+}
+
+// ─── MAIN REFRESH LOOP ───
+async function loadAndRender() {
+  if (config.demo) {
+    // Shuffle scores slightly for demo animation
+    const data = DEMO_DATA.map(d => ({
+      name: d.name,
+      score: Math.max(3.5, Math.min(5, d.score + (Math.random() - 0.5) * 0.08))
+    })).sort((a,b) => b.score - a.score);
+    renderBoard(data);
+  } else {
+    try {
+      document.getElementById('loadingOverlay').style.display = 'flex';
+      const data = await fetchSheetData(config.sheetId, config.sheetName);
+      document.getElementById('loadingOverlay').style.display = 'none';
+      document.getElementById('errorMsg').style.display = 'none';
+      if (data.length === 0) throw new Error('empty');
+      renderBoard(data);
+    } catch(e) {
+      document.getElementById('loadingOverlay').style.display = 'none';
+      if (operators.length === 0) {
+        document.getElementById('errorMsg').style.display = 'block';
+        showConfig();
+        return;
+      }
+    }
+  }
+  startCountdown(config.interval);
+}
+
+function showBoard() {
+  document.getElementById('configPanel').style.display = 'none';
+  document.getElementById('headerEl').style.display = '';
+  document.getElementById('trackArea').style.display = '';
+  document.getElementById('footerEl').style.display = '';
+}
+
+function showConfig() {
+  document.getElementById('configPanel').style.display = '';
+}
+
+async function startBoard() {
+  const sheetId = document.getElementById('sheetId').value.trim();
+  const sheetName = document.getElementById('sheetName').value.trim() || 'Sheet1';
+  const colFormat = document.getElementById('colFormat').value;
+  const interval = parseInt(document.getElementById('refreshInterval').value);
+
+  if (!sheetId) {
+    document.getElementById('errorMsg').style.display = 'block';
+    document.getElementById('errorMsg').textContent = '❌ Введите ID Google Sheets таблицы';
+    return;
+  }
+
+  config = { sheetId, sheetName, colFormat, interval, demo: false };
+  showBoard();
+  await loadAndRender();
+
+  clearInterval(refreshTimer);
+  refreshTimer = setInterval(async () => {
+    await loadAndRender();
+  }, interval * 1000);
+}
+
+function startDemo() {
+  config = { interval: 10, demo: true };
+  showBoard();
+  loadAndRender();
+
+  clearInterval(refreshTimer);
+  refreshTimer = setInterval(() => {
+    loadAndRender();
+  }, 10000);
+}
+
+// resize fix
+window.addEventListener('resize', () => {
+  if (document.getElementById('trackArea').style.display !== 'none') {
+    const track = document.getElementById('trackArea');
+    const trackW = track.clientWidth;
+    const leftOffset = 225;
+    const rightOffset = 175;
+    const raceWidth = trackW - rightOffset - 24 - leftOffset;
+    const maxScore = Math.max(...DEMO_DATA.map(d=>d.score));
+    const minScore = Math.min(...DEMO_DATA.map(d=>d.score));
+    for (let rank = 1; rank <= 10; rank++) {
+      const carEl = document.getElementById('car-' + rank);
+      if (carEl) {
+        const lane = carEl.closest('.race-lane');
+        if (!lane) continue;
+        const scoreEl = lane.querySelector('.score-value');
+        const score = parseFloat(scoreEl.textContent);
+        moveCar(rank, score, maxScore, minScore, raceWidth, leftOffset);
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>
