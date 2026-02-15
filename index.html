@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🚀 STELLAR QA LEAGUE</title>
+<title>🏁 ГОНКА ЗА КАЧЕСТВО</title>
 <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;600;700;800;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -37,9 +37,9 @@ html, body {
   color: var(--text);
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    SPACE BACKGROUND
-══════════════════════════════ */
+═══════════════════════════════ */
 #space-bg {
   position: fixed; inset:0; z-index:0;
   background:
@@ -75,9 +75,9 @@ body::after {
   );
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    CONFIG OVERLAY
-══════════════════════════════ */
+═══════════════════════════════ */
 .config-overlay {
   position:fixed; inset:0; z-index:900;
   background: rgba(3,5,15,0.8);
@@ -156,9 +156,9 @@ body::after {
 }
 .btn-demo:hover { color:rgba(255,255,255,0.6); border-color:rgba(255,255,255,0.25); }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    LAYOUT
-══════════════════════════════ */
+═══════════════════════════════ */
 #app {
   position:relative; z-index:10;
   width:100%; height:100%;
@@ -166,9 +166,9 @@ body::after {
   display:none;
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    HEADER
-══════════════════════════════ */
+═══════════════════════════════ */
 .hdr {
   flex-shrink:0;
   padding: 14px 36px 10px;
@@ -228,9 +228,9 @@ body::after {
 }
 @keyframes blink { 50%{opacity:0;} }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    TRACK AREA
-══════════════════════════════ */
+═══════════════════════════════ */
 .track-area {
   flex:1; overflow-y:auto; overflow-x:hidden;
   scrollbar-width:none; padding:8px 28px 6px;
@@ -238,9 +238,9 @@ body::after {
 }
 .track-area::-webkit-scrollbar { display:none; }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    LANE
-══════════════════════════════ */
+═══════════════════════════════ */
 .lane {
   position:relative; flex-shrink:0;
   height: calc((100vh - 130px) / 15.5);
@@ -359,8 +359,8 @@ body::after {
   text-transform:uppercase; color:var(--text-dim);
 }
 
-/* ── ROCKET CAR ── */
-.rocket-wrap {
+/* ── CAR ── */
+.car-wrap {
   position:absolute; top:50%;
   transform:translateY(-50%);
   z-index:20; pointer-events:none;
@@ -368,12 +368,12 @@ body::after {
 }
 
 /* Idle hover at finish */
-.rocket-wrap.is-idle .rocket-svg {
-  animation: rocketIdle 0.6s ease-in-out infinite alternate;
+.car-wrap.is-idle .car-svg {
+  animation: carIdle 0.8s ease-in-out infinite alternate;
 }
-@keyframes rocketIdle {
-  from { transform: translateY(0px) rotate(-1deg); }
-  to   { transform: translateY(-4px) rotate(1deg); }
+@keyframes carIdle {
+  from { transform: translateY(0px); }
+  to   { transform: translateY(-2px); }
 }
 
 /* Thruster flame */
@@ -415,7 +415,7 @@ body::after {
   pointer-events:none; opacity:0;
   transition:opacity 0.3s;
 }
-.rocket-wrap.is-moving .warp-lines { opacity:1; }
+.car-wrap.is-moving .warp-lines { opacity:1; }
 .warp-line {
   height:1px; margin-bottom:5px;
   background:linear-gradient(90deg,transparent,var(--cyan));
@@ -443,9 +443,9 @@ body::after {
   100%{opacity:0;transform:translateY(-24px);}
 }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    FOOTER
-══════════════════════════════ */
+═══════════════════════════════ */
 .footer {
   flex-shrink:0;
   padding:7px 36px;
@@ -483,9 +483,9 @@ body::after {
 }
 .cfg-btn:hover { border-color:var(--cyan); color:var(--cyan); box-shadow:0 0 10px rgba(0,229,255,0.15); }
 
-/* ══════════════════════════════
+/* ═══════════════════════════════
    CONFETTI PARTICLES
-══════════════════════════════ */
+═══════════════════════════════ */
 .particle {
   position:fixed; pointer-events:none; z-index:997;
   border-radius:50%;
@@ -509,7 +509,7 @@ body::after {
 <!-- CONFIG -->
 <div class="config-overlay" id="configOverlay">
   <div class="config-box">
-    <h2>🚀 STELLAR QA LEAGUE</h2>
+    <h2>🏁 ГОНКА ЗА КАЧЕСТВО</h2>
     <p class="sub">Настройте источник данных и запустите борд</p>
 
     <div class="form-group">
@@ -519,7 +519,7 @@ body::after {
     </div>
     <div class="form-group">
       <label>Название листа</label>
-      <input id="sheetName" type="text" value="Лист1" />
+      <input id="sheetName" type="text" value="Leaderboard service" />
       <div class="form-hint">Колонки: A = ФИО, B = Средний балл (0–100). Первая строка — заголовки.</div>
     </div>
 
@@ -538,8 +538,8 @@ body::after {
       <div id="lastUpd" style="font-family:'Share Tech Mono',monospace;font-size:10px;color:var(--text-dim)">—</div>
     </div>
     <div class="hdr-center">
-      <div class="hdr-title">🚀 STELLAR QA LEAGUE</div>
-      <div class="hdr-sub">Топ сервисных агентов галактики · Отдел качества</div>
+      <div class="hdr-title">🏁 ГОНКА ЗА КАЧЕСТВО</div>
+      <div class="hdr-sub">Топ сервисных агентов галактики</div>
     </div>
     <div class="hdr-side">
       <span id="opCount" class="op-badge">— агентов</span>
@@ -551,7 +551,7 @@ body::after {
 
   <!-- FOOTER -->
   <footer class="footer">
-    <span class="foot-lbl">Обновление через <b><span id="cdNum">300</span>с</b></span>
+    <span class="foot-lbl">Обновление через <b><span id="cdNum">60</span>с</b></span>
     <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
     <div class="foot-right">
       <button class="cfg-btn" onclick="showConfig()">⚙ настройки</button>
@@ -560,9 +560,9 @@ body::after {
 </div>
 
 <script>
-// ══════════════════════════════
+// ═══════════════════════════════
 // STARFIELD
-// ══════════════════════════════
+// ═══════════════════════════════
 (function() {
   const cv = document.getElementById('starfield');
   const cx = cv.getContext('2d');
@@ -596,71 +596,135 @@ body::after {
   window.addEventListener('resize', resize);
 })();
 
-// ══════════════════════════════
-// ROCKET SVG BUILDER
-// ══════════════════════════════
-const ROCKET_COLORS = [
-  {body:'#FFD037',accent:'#FF8C00',engine:'#FF4400',glow:'rgba(255,208,55,0.7)'},   // 1 gold
-  {body:'#B8CDD9',accent:'#7A9DB0',engine:'#4488AA',glow:'rgba(184,205,217,0.6)'},  // 2 silver
-  {body:'#FF8C42',accent:'#CC5500',engine:'#FF2200',glow:'rgba(255,140,66,0.6)'},   // 3 bronze
-  {body:'#00E5FF',accent:'#0099BB',engine:'#0055AA',glow:'rgba(0,229,255,0.6)'},    // 4 cyan
-  {body:'#FF2D7A',accent:'#AA0044',engine:'#660022',glow:'rgba(255,45,122,0.6)'},   // 5 magenta
-  {body:'#00FF9D',accent:'#00AA66',engine:'#006633',glow:'rgba(0,255,157,0.6)'},    // 6 green
-  {body:'#BF5FFF',accent:'#7700CC',engine:'#440088',glow:'rgba(191,95,255,0.6)'},   // 7 purple
-  {body:'#FF6B35',accent:'#CC3300',engine:'#881100',glow:'rgba(255,107,53,0.6)'},   // 8 orange
-  {body:'#F72585',accent:'#AA0055',engine:'#660033',glow:'rgba(247,37,133,0.6)'},   // 9 pink
-  {body:'#4CC9F0',accent:'#0077AA',engine:'#004466',glow:'rgba(76,201,240,0.6)'},   // 10 sky
-  {body:'#7BFF8A',accent:'#33AA44',engine:'#116622',glow:'rgba(123,255,138,0.6)'},  // 11 lime
-  {body:'#FFBE0B',accent:'#CC8800',engine:'#885500',glow:'rgba(255,190,11,0.6)'},   // 12 amber
-  {body:'#3A86FF',accent:'#0044CC',engine:'#002288',glow:'rgba(58,134,255,0.6)'},   // 13 blue
-  {body:'#FF595E',accent:'#BB1122',engine:'#770011',glow:'rgba(255,89,94,0.6)'},    // 14 red
-  {body:'#8ECAE6',accent:'#4A90B8',engine:'#1A5580',glow:'rgba(142,202,230,0.6)'},  // 15 steel
+// ═══════════════════════════════
+// CAR SVG BUILDER (с львом за рулём)
+// ═══════════════════════════════
+const CAR_COLORS = [
+  {body:'#FFD037',accent:'#FF8C00',wheel:'#333',glow:'rgba(255,208,55,0.7)'},   // 1 gold
+  {body:'#B8CDD9',accent:'#7A9DB0',wheel:'#444',glow:'rgba(184,205,217,0.6)'},  // 2 silver
+  {body:'#FF8C42',accent:'#CC5500',wheel:'#333',glow:'rgba(255,140,66,0.6)'},   // 3 bronze
+  {body:'#00E5FF',accent:'#0099BB',wheel:'#222',glow:'rgba(0,229,255,0.6)'},    // 4 cyan
+  {body:'#FF2D7A',accent:'#AA0044',wheel:'#333',glow:'rgba(255,45,122,0.6)'},   // 5 magenta
+  {body:'#00FF9D',accent:'#00AA66',wheel:'#2a2a2a',glow:'rgba(0,255,157,0.6)'},    // 6 green
+  {body:'#BF5FFF',accent:'#7700CC',wheel:'#333',glow:'rgba(191,95,255,0.6)'},   // 7 purple
+  {body:'#FF6B35',accent:'#CC3300',wheel:'#2a2a2a',glow:'rgba(255,107,53,0.6)'},   // 8 orange
+  {body:'#F72585',accent:'#AA0055',wheel:'#333',glow:'rgba(247,37,133,0.6)'},   // 9 pink
+  {body:'#4CC9F0',accent:'#0077AA',wheel:'#222',glow:'rgba(76,201,240,0.6)'},   // 10 sky
+  {body:'#7BFF8A',accent:'#33AA44',wheel:'#2a2a2a',glow:'rgba(123,255,138,0.6)'},  // 11 lime
+  {body:'#FFBE0B',accent:'#CC8800',wheel:'#333',glow:'rgba(255,190,11,0.6)'},   // 12 amber
+  {body:'#3A86FF',accent:'#0044CC',wheel:'#222',glow:'rgba(58,134,255,0.6)'},   // 13 blue
+  {body:'#FF595E',accent:'#BB1122',wheel:'#333',glow:'rgba(255,89,94,0.6)'},    // 14 red
+  {body:'#8ECAE6',accent:'#4A90B8',wheel:'#2a2a2a',glow:'rgba(142,202,230,0.6)'},  // 15 steel
 ];
 
 function buildRocket(rank) {
-  const c = ROCKET_COLORS[(rank-1) % ROCKET_COLORS.length];
-  const W=68, H=28;
-  return `<svg class="rocket-svg" width="${W}" height="${H}" viewBox="0 0 68 28" xmlns="http://www.w3.org/2000/svg">
+  const c = CAR_COLORS[(rank-1) % CAR_COLORS.length];
+  const W=90, H=60;
+  return `<svg class="car-svg" width="${W}" height="${H}" viewBox="0 0 90 60" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <radialGradient id="bg${rank}" cx="60%" cy="40%" r="60%">
+    <radialGradient id="rocketGrad${rank}" cx="45%" cy="35%">
       <stop offset="0%" stop-color="${c.body}"/>
       <stop offset="100%" stop-color="${c.accent}"/>
     </radialGradient>
-    <filter id="gf${rank}"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <filter id="rocketGlow${rank}">
+      <feGaussianBlur stdDeviation="2.5"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <radialGradient id="flame1">
+      <stop offset="0%" stop-color="#FFD037"/>
+      <stop offset="100%" stop-color="#FF6B00" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flame2">
+      <stop offset="0%" stop-color="#FF6B00"/>
+      <stop offset="100%" stop-color="#FF2D7A" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="flame3">
+      <stop offset="0%" stop-color="#FF2D7A"/>
+      <stop offset="100%" stop-color="transparent"/>
+    </radialGradient>
   </defs>
+
+  <!-- Warp speed lines (behind rocket) -->
+  <g class="warp-lines" opacity="0.6">
+    <line x1="-10" y1="24" x2="8" y2="24" stroke="${c.body}" stroke-width="1.5" opacity="0.5"/>
+    <line x1="-15" y1="30" x2="5" y2="30" stroke="${c.body}" stroke-width="1.2" opacity="0.4"/>
+    <line x1="-8" y1="36" x2="10" y2="36" stroke="${c.body}" stroke-width="1" opacity="0.3"/>
+  </g>
+  
+  <!-- Thruster flames (animated) -->
+  <g class="flame-layer">
+    <ellipse cx="12" cy="30" rx="10" ry="6" fill="url(#flame1)" opacity="0.9">
+      <animate attributeName="rx" values="10;12;10" dur="0.15s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="6;5;6" dur="0.15s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <g class="flame-layer">
+    <ellipse cx="9" cy="30" rx="12" ry="7" fill="url(#flame2)" opacity="0.7">
+      <animate attributeName="rx" values="12;14;12" dur="0.12s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="7;6;7" dur="0.12s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+  <g class="flame-layer">
+    <ellipse cx="6" cy="30" rx="14" ry="8" fill="url(#flame3)" opacity="0.5">
+      <animate attributeName="rx" values="14;16;14" dur="0.1s" repeatCount="indefinite"/>
+      <animate attributeName="ry" values="8;7;8" dur="0.1s" repeatCount="indefinite"/>
+    </ellipse>
+  </g>
+
   <!-- Engine nozzle -->
-  <path d="M10 11 L4 14 L4 14 L10 17 Z" fill="${c.engine}" opacity="0.8"/>
-  <!-- Main body -->
-  <path d="M12 7 Q18 4 34 5 L58 11 Q62 14 58 17 L34 23 Q18 24 12 21 Z" fill="url(#bg${rank})" filter="url(#gf${rank})"/>
-  <!-- Nose cone -->
-  <path d="M58 11 Q66 14 58 17 Z" fill="${c.body}" opacity="0.9"/>
-  <!-- Top fin -->
-  <path d="M18 7 L14 0 L10 7 Z" fill="${c.accent}" opacity="0.85"/>
+  <ellipse cx="16" cy="30" rx="7" ry="9" fill="${c.accent}" opacity="0.9"/>
+  <ellipse cx="16" cy="30" rx="5" ry="7" fill="#1a1a1a"/>
+  <circle cx="16" cy="30" r="2.5" fill="${c.body}" opacity="0.7">
+    <animate attributeName="r" values="2.5;3;2.5" dur="0.3s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Main rocket body -->
+  <ellipse cx="50" cy="30" rx="34" ry="17" fill="url(#rocketGrad${rank})" filter="url(#rocketGlow${rank})"/>
+  
   <!-- Bottom fin -->
-  <path d="M18 21 L14 28 L10 21 Z" fill="${c.accent}" opacity="0.85"/>
-  <!-- Cockpit window -->
-  <ellipse cx="46" cy="14" rx="6" ry="4.5" fill="rgba(180,240,255,0.15)" stroke="rgba(255,255,255,0.5)" stroke-width="0.8"/>
-  <ellipse cx="46" cy="14" rx="4" ry="3" fill="rgba(120,220,255,0.25)"/>
-  <!-- Side stripe -->
-  <path d="M18 13 L54 13 L54 15 L18 15 Z" fill="rgba(255,255,255,0.2)"/>
-  <!-- Rank number -->
-  <text x="32" y="17" text-anchor="middle" font-family="Share Tech Mono,monospace" font-size="8" font-weight="900" fill="rgba(255,255,255,0.9)">${rank}</text>
-  <!-- Engine glow dot -->
-  <circle cx="10" cy="14" r="2.5" fill="${c.engine}" opacity="0.9"/>
+  <path d="M 34,40 L 30,50 L 38,44 Z" fill="${c.accent}" opacity="0.85"/>
+  
+  <!-- Top fin -->
+  <path d="M 34,20 L 30,10 L 38,16 Z" fill="${c.accent}" opacity="0.85"/>
+
+  <!-- Cockpit window (glass) -->
+  <ellipse cx="50" cy="30" rx="8" ry="6" fill="rgba(180,240,255,0.2)" stroke="rgba(255,255,255,0.6)" stroke-width="1.2"/>
+  <ellipse cx="50" cy="30" rx="5.5" ry="4.5" fill="rgba(120,220,255,0.3)"/>
+  
+  <!-- Pilot silhouette inside -->
+  <g opacity="0.7">
+    <ellipse cx="50" cy="30" rx="3" ry="3.5" fill="#FFFFFF" opacity="0.4"/>
+    <circle cx="49" cy="29" r="0.5" fill="#000"/>
+    <circle cx="51" cy="29" r="0.5" fill="#000"/>
+  </g>
+
+  <!-- Nose cone highlight -->
+  <ellipse cx="70" cy="30" rx="8" ry="6" fill="${c.body}" opacity="0.4"/>
+  <circle cx="75" cy="28" r="3" fill="rgba(255,255,255,0.3)"/>
+  
+  <!-- Detail stripes -->
+  <path d="M 30,26 L 60,26 L 60,27 L 30,27 Z" fill="rgba(255,255,255,0.2)"/>
+  <path d="M 30,33 L 60,33 L 60,34 L 30,34 Z" fill="rgba(255,255,255,0.2)"/>
+  
+  <!-- Rank number on fuselage -->
+  <text x="64" y="35" font-family="Exo 2,sans-serif" font-size="11" font-weight="900" fill="#1a1a1a" opacity="0.6">${rank}</text>
 </svg>`;
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // STATE
-// ══════════════════════════════
+// ═══════════════════════════════
 let cfg = {};
 let prevRanks = {};
-let refreshTimer = null, cdTimer = null, cdVal = 300;
+let refreshTimer = null, cdTimer = null, cdVal = 60;
 let scrollDir = 1, scrollPos = 0, scrollPaused = false, scrollStarted = false;
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // DEMO DATA (real operators)
-// ══════════════════════════════
+// ═══════════════════════════════
 const DEMO_DATA = [
   {name:'Самарбекова Айдай Самарбековна',      score:99.375},
   {name:'Азаматова Селкинай Азаматовна',        score:98.625},
@@ -675,27 +739,34 @@ const DEMO_DATA = [
   {name:'Уланбек уулу Зарылбек',                score:94.5},
   {name:'Ахмадбеков Асадбек Асилбекович',       score:94.25},
   {name:'Джунусов Темирлан Карыбекович',        score:94.167},
-  {name:'Саякова Адинай Каныбековна',           score:94.143},
+  {name:'Саскова Адинай Каныбековна',           score:94.143},
   {name:'Сыйдалыев Акмаль Талантбекович',       score:92.875},
 ];
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // FETCH SHEETS (JSONP — works from file://)
-// ══════════════════════════════
+// ═══════════════════════════════
 function fetchSheet(id, sheetName) {
   return new Promise((resolve, reject) => {
     const old = document.getElementById('_gsjsonp');
     if (old) old.remove();
-    if (window.__gsCB) delete window.__gsCB;
+    
+    // Clean up previous google object if exists
+    if (window.google && window.google.visualization) {
+      delete window.google;
+    }
 
     const to = setTimeout(() => {
-      delete window.__gsCB;
       reject(new Error('Таблица не ответила (timeout 10s)'));
     }, 10000);
 
-    window.__gsCB = function(json) {
+    // Create google.visualization.Query object to receive response
+    window.google = window.google || {};
+    window.google.visualization = window.google.visualization || {};
+    window.google.visualization.Query = window.google.visualization.Query || {};
+    
+    window.google.visualization.Query.setResponse = function(json) {
       clearTimeout(to);
-      delete window.__gsCB;
       try {
         const rows = json.table.rows || [];
         const result = [];
@@ -708,20 +779,25 @@ function fetchSheet(id, sheetName) {
         }
         const sorted = result.sort((a,b) => b.score - a.score).slice(0, 15);
         sorted.length ? resolve(sorted) : reject(new Error('Нет данных'));
-      } catch(e) { reject(e); }
+      } catch(e) { 
+        reject(e); 
+      }
     };
 
     const script = document.createElement('script');
     script.id = '_gsjsonp';
-    script.src = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&callback=__gsCB&sheet=${encodeURIComponent(sheetName)}`;
-    script.onerror = () => { clearTimeout(to); delete window.__gsCB; reject(new Error('Сеть недоступна')); };
+    script.src = `https://docs.google.com/spreadsheets/d/${id}/gviz/tq?tqx=out:json&sheet=${encodeURIComponent(sheetName)}`;
+    script.onerror = () => { 
+      clearTimeout(to); 
+      reject(new Error('Сеть недоступна')); 
+    };
     document.head.appendChild(script);
   });
 }
 
-// ══════════════════════════════
-// SCORE HELPERS
-// ══════════════════════════════
+// ═══════════════════════════════
+// SCORE HELPERS (позиционирование от 0 до 100)
+// ═══════════════════════════════
 function scoreColor(s, max, min) {
   const t = max===min ? 1 : (s-min)/(max-min);
   if (t > 0.88) return '#FFD037';
@@ -731,14 +807,20 @@ function scoreColor(s, max, min) {
   return '#FF2D7A';
 }
 
-function carLeft(score, maxS, minS, raceW, leftW) {
-  const t = maxS===minS ? 1 : (score-minS)/(maxS-minS);
-  return leftW + (0.08 + t*0.92) * raceW;
+function carLeft(score, raceW, leftW, rank, totalRanks) {
+  // Позиционируем по рангу: 1 место ближе всего к финишу (90%), последнее - дальше (30%)
+  // Инвертируем: rank=1 -> t=1.0, rank=15 -> t=0
+  const t = 1 - ((rank - 1) / (totalRanks - 1));
+  // Размещаем от 30% до 90% трассы
+  const minPos = 0.30;
+  const maxPos = 0.90;
+  const position = minPos + t * (maxPos - minPos);
+  return leftW + position * raceW;
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // RENDER
-// ══════════════════════════════
+// ═══════════════════════════════
 function renderBoard(data) {
   const area = document.getElementById('trackArea');
   const isFirst = !area.querySelector('.lane');
@@ -752,7 +834,7 @@ function renderBoard(data) {
     area.innerHTML = '';
     data.forEach((op, i) => area.appendChild(buildLane(op, i+1, maxS, minS)));
     requestAnimationFrame(() => {
-      data.forEach((op, i) => setTimeout(() => moveCar(i+1, op.score, maxS, minS), 80 + i*90));
+      data.forEach((op, i) => setTimeout(() => moveCar(i+1, op.score, maxS, minS, data.length), 80 + i*90));
     });
   } else {
     // detect rank changes
@@ -776,7 +858,7 @@ function renderBoard(data) {
       const t = maxS===minS?1:(op.score-minS)/(maxS-minS);
       fill.style.width = (8+t*92)+'%';
       fill.style.background = scoreColor(op.score, maxS, minS);
-      moveCar(rank, op.score, maxS, minS);
+      moveCar(rank, op.score, maxS, minS, data.length);
     });
     // confetti if new #1
     if (data[0] && prevRanks[data[0].name] && prevRanks[data[0].name] > 1) spawnParticles();
@@ -803,7 +885,7 @@ function buildLane(op, rank, maxS, minS) {
       <div class="rank-num">${rankLabel}</div>
       <div class="op-name">${op.name}</div>
     </div>
-    <div class="rocket-wrap" id="rkt-${rank}">
+    <div class="car-wrap" id="car-${rank}">
       <div class="warp-lines">
         <div class="warp-line" style="width:30px"></div>
         <div class="warp-line" style="width:22px;margin-left:6px"></div>
@@ -822,35 +904,37 @@ function buildLane(op, rank, maxS, minS) {
       <div class="score-lbl">из 100</div>
     </div>`;
 
-  // Start rocket off-screen left
-  div.querySelector(`#rkt-${rank}`).style.left = '300px';
+  // Start car off-screen left
+  div.querySelector(`#car-${rank}`).style.left = '300px';
   return div;
 }
 
-function moveCar(rank, score, maxS, minS) {
+function moveCar(rank, score, maxS, minS, totalRanks) {
   const area = document.getElementById('trackArea');
-  const rkt = document.getElementById('rkt-'+rank);
-  if (!rkt) return;
+  const car = document.getElementById('car-'+rank);
+  if (!car) return;
 
   const areaW = area.clientWidth;
   const leftW  = 296;
   const rightW = 150;
   const finishX = areaW - rightW - 22;
-  const raceW = finishX - leftW;
-  const target = carLeft(score, maxS, minS, raceW, leftW);
+  const raceW = finishX - leftW - 90; // Reserve 90px for rocket width to prevent crossing finish
 
-  rkt.classList.add('is-moving');
-  rkt.style.left = target + 'px';
+  const target = carLeft(score, raceW, leftW, rank, totalRanks);
+
+  car.classList.add('is-moving');
+  car.style.left = target + 'px';
 
   setTimeout(() => {
-    rkt.classList.remove('is-moving');
-    rkt.classList.toggle('is-idle', target >= finishX - 12);
+    car.classList.remove('is-moving');
+    // Only top 3 get idle animation
+    car.classList.toggle('is-idle', rank <= 3);
   }, 1600);
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // DELTA BADGE
-// ══════════════════════════════
+// ═══════════════════════════════
 function showDelta(rank, delta) {
   const lane = document.querySelector(`[data-rank="${rank}"]`);
   if (!lane) return;
@@ -861,9 +945,9 @@ function showDelta(rank, delta) {
   setTimeout(() => el.remove(), 2400);
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // PARTICLES
-// ══════════════════════════════
+// ═══════════════════════════════
 function spawnParticles() {
   const colors = [
     'var(--gold)','var(--cyan)','var(--magenta)',
@@ -887,9 +971,9 @@ function spawnParticles() {
   }
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // COUNTDOWN
-// ══════════════════════════════
+// ═══════════════════════════════
 function startCountdown(secs) {
   clearInterval(cdTimer);
   cdVal = secs;
@@ -904,9 +988,9 @@ function startCountdown(secs) {
   }, 1000);
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // AUTO SCROLL
-// ══════════════════════════════
+// ═══════════════════════════════
 function initAutoScroll() {
   if (scrollStarted) return;
   scrollStarted = true;
@@ -928,9 +1012,9 @@ function initAutoScroll() {
   }, 30);
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // LOAD & RENDER
-// ══════════════════════════════
+// ═══════════════════════════════
 async function loadAndRender() {
   if (cfg.demo) {
     const data = DEMO_DATA.map(d => ({
@@ -951,18 +1035,18 @@ async function loadAndRender() {
     err.style.display = 'block';
     const m = e.message||'';
     if (m.includes('timeout')||m.includes('Timeout'))
-      err.textContent = '❌ Таблица не отвечает. Проверьте ID и название листа.';
+      err.textContent = '⌛ Таблица не отвечает. Проверьте ID и название листа.';
     else if (m.includes('данных'))
-      err.textContent = '❌ Лист пустой. Колонки: A = ФИО, B = Балл. Строка 1 — заголовки.';
+      err.textContent = '⌛ Лист пустой. Колонки: A = ФИО, B = Балл. Строка 1 — заголовки.';
     else
-      err.textContent = '❌ Ошибка: ' + m + '. Убедитесь — доступ «Все с ссылкой → Читатель».';
+      err.textContent = '⌛ Ошибка: ' + m + '. Убедитесь — доступ «Все с ссылкой → Читатель».';
     if (!document.querySelector('.lane')) showConfig();
   }
 }
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // UI FLOW
-// ══════════════════════════════
+// ═══════════════════════════════
 function showBoard() {
   document.getElementById('configOverlay').style.display = 'none';
   document.getElementById('app').style.display = 'flex';
@@ -976,7 +1060,7 @@ async function startBoard() {
   const sn = document.getElementById('sheetName').value.trim() || 'Лист1';
   if (!id) {
     const err = document.getElementById('configErr');
-    err.style.display='block'; err.textContent='❌ Введите ID таблицы';
+    err.style.display='block'; err.textContent='⌛ Введите ID таблицы';
     return;
   }
   cfg = { sheetId:id, sheetName:sn, interval:60, demo:false };
@@ -996,9 +1080,9 @@ function startDemo() {
   setTimeout(initAutoScroll, 2500);
 }
 
-// ══════════════════════════════
-// RESIZE: reposition rockets
-// ══════════════════════════════
+// ═══════════════════════════════
+// RESIZE: reposition cars
+// ═══════════════════════════════
 window.addEventListener('resize', () => {
   const lanes = document.querySelectorAll('.lane');
   if (!lanes.length) return;
@@ -1009,20 +1093,20 @@ window.addEventListener('resize', () => {
   });
 });
 
-// ══════════════════════════════
+// ═══════════════════════════════
 // AUTO-LAUNCH
-// ══════════════════════════════
+// ═══════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
   cfg = {
     sheetId:   '1NHrU5fNogX2siHzIUKpQer5PrfH8lQm_ZcnBzKTanHs',
-    sheetName: 'Лист1',
-    interval:  300,
+    sheetName: 'Leaderboard service',
+    interval:  60,
     demo:      false
   };
   showBoard();
   loadAndRender().then(() => {
     clearInterval(refreshTimer);
-    refreshTimer = setInterval(loadAndRender, 300_000);
+    refreshTimer = setInterval(loadAndRender, 60_000);
     setTimeout(initAutoScroll, 2500);
   });
 });
